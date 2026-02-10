@@ -49,4 +49,10 @@ public class ProductController {
         service.edit(product);
         return "redirect:list";
     }
+
+    @PostMapping("/delete/{productId}")
+    public String deleteProduct(@PathVariable("productId") String productId) {
+        service.delete(productId);
+        return "redirect:/product/list";
+    }
 }
