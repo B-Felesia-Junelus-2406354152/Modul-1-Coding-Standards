@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -44,5 +48,34 @@ class ProductServiceImplTest {
     void testDeleteProduct() {
         productService.delete("test-id");
         verify(productRepository, times(1)).delete("test-id");
+    }
+
+    @Test
+    void testFindAll() {
+        List<Product> productList = new ArrayList<>();
+        productList.add(product);
+        Iterator<Product> productIterator = productList.iterator();
+
+        when(productRepository.findAll()).thenReturn(productIterator);
+        List<Product> result = productService.findAll();
+
+        assertEquals(1, result.size());
+        assertEquals(product, result.get(0));
+        verify(productRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testFindById() {
+        when(productRepository.findById("test-id")).thenReturn(product);
+        Product result = productService.findById("test-id");
+
+        assertEquals(product, result);
+        verify(productRepository, times(1)).findById("test-id");
+    }
+
+    @Test
+    void testEditProduct() {
+        productService.edit(product);
+        verify(productRepository, times(1)).edit(product);
     }
 }
