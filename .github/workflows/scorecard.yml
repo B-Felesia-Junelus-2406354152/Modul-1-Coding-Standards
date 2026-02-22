@@ -12,7 +12,9 @@ on:
   schedule:
     - cron: '34 12 * * 6'
   push:
-    branches: [ "main", "ci-cd" ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 # Declare default permissions as read only.
 permissions: read-all
