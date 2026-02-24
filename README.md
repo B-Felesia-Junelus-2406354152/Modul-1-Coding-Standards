@@ -1,6 +1,7 @@
 # ADV Shop (eshop)
 
-Aplikasi e-commerce sederhana menggunakan Spring Boot.
+Aplikasi e-commerce sederhana menggunakan Spring Boot.  
+
 Link deployment : https://past-atalanta-b-felesia-junelus-2406354152-c09ae512.koyeb.app/ 
 
 ---
@@ -50,4 +51,4 @@ Selama ngerjain *exercise* ini, aku benerin beberapa masalah kualitas kode dan k
 **2. Look at your CI/CD workflows (GitHub Actions). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!**
 Iya, menurut aku implementasi yang aku buat sekarang udah memenuhi definisi dari *Continuous Integration* (CI) dan *Continuous Deployment* (CD). 
 Alasannya, buat bagian CI, tiap kali aku nge-*push* kode atau bikin *Pull Request*, GitHub Actions bakal otomatis ngejalanin *unit test* (`ci.yml`), ngecek keamanan (*supply-chain*) pakai Scorecard, dan nyari *bug* atau *code smell* pakai SonarCloud (`build.yml`). Jadi kodenya dipastiin aman dan jalan dulu sebelum digabungin. 
-Terus buat bagian CD-nya, aku udah ngebungkus aplikasinya pakai `Dockerfile` dan nyambungin repo ini ke platform Render. Jadi, tiap kali kode yang udah aman tadi di-*merge* ke branch `main`, Render bakal otomatis narik kodenya dan langsung nge-*deploy* aplikasinya ke internet biar bisa dipakai sama *user*.
+Terus buat bagian CD-nya, aku udah ngebungkus aplikasinya pakai `Dockerfile` dan nyambungin repo ini ke platform Koyeb. Jadi, tiap kali kode yang udah aman tadi di-*merge* ke branch `main`, Koyeb bakal otomatis narik kodenya dan langsung nge-*deploy* aplikasinya ke internet biar bisa dipakai sama *user*.
