@@ -52,3 +52,39 @@ Selama ngerjain *exercise* ini, aku benerin beberapa masalah kualitas kode dan k
 Iya, menurut aku implementasi yang aku buat sekarang udah memenuhi definisi dari *Continuous Integration* (CI) dan *Continuous Deployment* (CD). 
 Alasannya, buat bagian CI, tiap kali aku nge-*push* kode atau bikin *Pull Request*, GitHub Actions bakal otomatis ngejalanin *unit test* (`ci.yml`), ngecek keamanan (*supply-chain*) pakai Scorecard, dan nyari *bug* atau *code smell* pakai SonarCloud (`build.yml`). Jadi kodenya dipastiin aman dan jalan dulu sebelum digabungin. 
 Terus buat bagian CD-nya, aku udah ngebungkus aplikasinya pakai `Dockerfile` dan nyambungin repo ini ke platform Koyeb. Jadi, tiap kali kode yang udah aman tadi di-*merge* ke branch `main`, Koyeb bakal otomatis narik kodenya dan langsung nge-*deploy* aplikasinya ke internet biar bisa dipakai sama *user*.
+
+---
+
+## Module 3 - Maintainability & OO Principles
+
+### Reflection
+
+**1) Prinsip SOLID yang diterapkan pada proyek:**
+
+- **SRP (Single Responsibility Principle):** Sebelumnya, `CarController` didefinisikan di dalam file `ProductController.java` dan bahkan `extends ProductController`. Ini melanggar SRP karena satu file punya dua tanggung jawab. Aku perbaiki dengan **memisahkan `CarController` ke file sendiri** dan **menghapus inheritance** yang tidak perlu, sehingga setiap controller hanya bertanggung jawab atas satu entity.
+
+- **OCP (Open/Closed Principle):** Aku membuat Repository interface dan mengimplementasikannya pada `ProductRepository` dan `CarRepository`. Hal ini mengizinkan kita menambahkan Repository baru yang mengimplementasikan interface tersebut tanpa mengubah kode yang telah ada.
+
+- **LSP (Liskov Substitution Principle):** Setelah perbaikan SRP, semua implementasi service (`ProductServiceImpl`, `CarServiceImpl`) bisa menggantikan interface-nya tanpa merusak program. Sebelumnya, `CarController extends ProductController` melanggar LSP karena CarController tidak bisa sepenuhnya menggantikan ProductController.
+
+- **ISP (Interface Segregation Principle):** Interface `ProductService` dan `CarService` sudah kecil dan fokus, masing-masing hanya berisi 5 method CRUD yang semuanya dibutuhkan oleh client-nya. Tidak ada "fat interface" yang memaksa client mengimplementasikan method yang tidak relevan.
+
+- **DIP (Dependency Inversion Principle):** Aku menambahkan **interface untuk repository** (`ProductRepositoryInterface`, `CarRepositoryInterface`). Sebelumnya, service layer bergantung langsung pada class konkret repository — sekarang service bergantung pada abstraksi (interface), sesuai prinsip DIP. Lalu aku mengganti tipe dari variabel carService pada CarController menjadi CarService (sebelumnya CarServiceImpl). Hal ini dilakukan karena CarController seharusnya bergantung pada abstraksi (interface) dibandingkan dengan implementasi.
+
+**2) Keuntungan menerapkan prinsip SOLID:**
+
+- Dengan **SRP**, kalau ada perubahan pada fitur Car, aku cukup ubah `CarController.java` saja tanpa khawatir merusak fitur Product. Misalnya, menambah endpoint baru untuk Car tidak akan berpengaruh sama sekali ke `ProductController`.
+- Dengan **OCP**, kalau suatu hari mau ganti penyimpanan dari in-memory `ArrayList` ke database (JPA), aku cukup buat class baru `ProductRepositoryJpa implements ProductRepositoryInterface` tanpa perlu mengubah kode repository yang sudah ada.
+- Dengan **DIP**, `CarController` bergantung pada interface `CarService` (bukan `CarServiceImpl`), sehingga kalau mau ganti implementasi service, controller tidak perlu diubah. Begitu juga service yang bergantung pada repository interface, bukan class konkret.
+
+**3) Kerugian kalau tidak menerapkan prinsip SOLID:**
+
+- Tanpa **SRP**, seperti yang terjadi sebelumnya di mana `CarController` dan `ProductController` digabung dalam satu file, perubahan kecil pada satu fitur bisa tidak sengaja merusak fitur lain. Misalnya, mengubah mapping URL Product bisa ikut mempengaruhi Car karena `CarController extends ProductController`.
+- Tanpa **OCP**, kalau mau mengganti cara penyimpanan data (misal dari `ArrayList` ke database), kita harus mengubah kode `ProductRepository` yang sudah ada, bukan cukup membuat implementasi baru. Ini berisiko merusak fitur yang sebelumnya sudah berjalan.
+- Tanpa **DIP**, `CarController` yang bergantung langsung pada `CarServiceImpl` (bukan interface `CarService`) akan sulit di-test dan sulit diganti implementasinya. Hal yang sama berlaku untuk service yang bergantung pada class konkret repository — kita tidak bisa dengan mudah mock atau swap implementasinya.
+
+---
+
+## Module 3 - Continuous Integration & Continuous Deployment (CI/CD)
+
+### Reflection
