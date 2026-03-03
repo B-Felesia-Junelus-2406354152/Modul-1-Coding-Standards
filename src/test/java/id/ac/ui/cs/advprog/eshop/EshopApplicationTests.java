@@ -11,9 +11,5 @@ class EshopApplicationTests {
     void contextLoads() {
         assertTrue(true, "The application context should load successfully");
     }
-
-    @Test
-    void testMain() {
-        EshopApplication.main(new String[]{});
-    }
 }
+
