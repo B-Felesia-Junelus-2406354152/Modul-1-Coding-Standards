@@ -12,3 +12,4 @@ class EshopApplicationTests {
         assertTrue(true, "The application context should load successfully");
     }
 }
+
