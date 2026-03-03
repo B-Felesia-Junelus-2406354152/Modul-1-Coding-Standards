@@ -82,9 +82,3 @@ Terus buat bagian CD-nya, aku udah ngebungkus aplikasinya pakai `Dockerfile` dan
 - Tanpa **SRP**, seperti yang terjadi sebelumnya di mana `CarController` dan `ProductController` digabung dalam satu file, perubahan kecil pada satu fitur bisa tidak sengaja merusak fitur lain. Misalnya, mengubah mapping URL Product bisa ikut mempengaruhi Car karena `CarController extends ProductController`.
 - Tanpa **OCP**, kalau mau mengganti cara penyimpanan data (misal dari `ArrayList` ke database), kita harus mengubah kode `ProductRepository` yang sudah ada, bukan cukup membuat implementasi baru. Ini berisiko merusak fitur yang sebelumnya sudah berjalan.
 - Tanpa **DIP**, `CarController` yang bergantung langsung pada `CarServiceImpl` (bukan interface `CarService`) akan sulit di-test dan sulit diganti implementasinya. Hal yang sama berlaku untuk service yang bergantung pada class konkret repository — kita tidak bisa dengan mudah mock atau swap implementasinya.
-
----
-
-## Module 3 - Continuous Integration & Continuous Deployment (CI/CD)
-
-### Reflection
